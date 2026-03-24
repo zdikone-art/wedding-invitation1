@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wedding Invitation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Great+Vibes&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+body {
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+    background: linear-gradient(#eef5ff, #ffffff);
+    color: #1f3a5f;
+    overflow-x: hidden;
+}
+.hero {
+    text-align: center;
+    padding: 100px 20px;
+    position: relative;
+}
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top, rgba(42,77,143,0.1), transparent);
+}
+.names {
+    font-family: 'Great Vibes', cursive;
+    font-size: 56px;
+    color: #2a4d8f;
+    animation: fadeIn 2s ease forwards;
+}
+.section {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 35px;
+    background: white;
+    border-radius: 25px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    text-align: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s ease;
+}
+.section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.title {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+}
+.divider {
+    width: 70px;
+    height: 2px;
+    background: #2a4d8f;
+    margin: 15px auto;
+}
+.button {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 12px 24px;
+    background: #2a4d8f;
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: 0.3s;
+}
+.button:hover {
+    background: #1a2f5a;
+}
+.countdown {
+    font-size: 22px;
+    margin-top: 10px;
+}
+footer {
+    text-align: center;
+    margin: 40px;
+    color: #777;
+}
+/* Floating petals */
+.petal {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: rgba(42,77,143,0.2);
+    border-radius: 50%;
+    animation: fall linear infinite;
+}
+@keyframes fall {
+    to {
+        transform: translateY(100vh);
+    }
+}
+@keyframes fadeIn {
+    from {opacity:0; transform: translateY(20px);} 
+    to {opacity:1; transform: translateY(0);} 
+}
+</style>
+</head>
+<body>
+
+<!-- floating petals -->
+<script>
+for(let i=0;i<25;i++){
+    let petal=document.createElement("div");
+    petal.className="petal";
+    petal.style.left=Math.random()*100+"vw";
+    petal.style.animationDuration=(5+Math.random()*5)+"s";
+    petal.style.opacity=Math.random();
+    document.body.appendChild(petal);
+}
+</script>
+
+<div class="hero">
+    <p>💙 Together with their families 💙</p>
+    <div class="names">Rogelio</div>
+    <div class="names">&</div>
+    <div class="names">Johna</div>
+    <p>invite you to celebrate their wedding</p>
+</div>
+
+<div class="section">
+    <div class="title">April 07, 2026 (Tuesday)</div>
+    <div class="divider"></div>
+    <p>9:00 AM</p>
+    <div class="countdown" id="countdown"></div>
+</div>
+
+<div class="section">
+    <div class="title">Ceremony</div>
+    <p>Parish of Christ the Eucharistic King</p>
+    <a class="button" href="https://maps.app.goo.gl/FJFFX1MuMwzgoiz16" target="_blank">View Map</a>
+</div>
+
+<div class="section">
+    <div class="title">Reception</div>
+    <p>Island Kitchen</p>
+    <a class="button" href="https://maps.app.goo.gl/LYHR4MzJVQffhyPA8" target="_blank">View Map</a>
+</div>
+
+<div class="section">
+    <div class="title">Details</div>
+    <p>🎨 Motif: Blue & White<br>👗 Attire: Formal</p>
+</div>
+
+<footer>
+    💌 Your presence will make our day even more special
+</footer>
+
+<script>
+// countdown
+const countdown = document.getElementById("countdown");
+const weddingDate = new Date("April 07, 2026 09:00:00").getTime();
+setInterval(() => {
+    const now = new Date().getTime();
+    const distance = weddingDate - now;
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((distance / (1000 * 60)) % 60);
+    countdown.innerHTML = `${days} days ${hours} hrs ${minutes} mins to go`;
+}, 1000);
+
+// scroll animation
+const sections = document.querySelectorAll('.section');
+window.addEventListener('scroll', () => {
+    sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if(rect.top < window.innerHeight - 100){
+            sec.classList.add('visible');
+        }
+    });
+});
+</script>
+
+<!-- Background Music -->
+<div style="position:fixed; bottom:20px; right:20px; z-index:999;">
+    <button onclick="toggleMusic()" style="padding:10px 15px; border:none; border-radius:20px; background:#2a4d8f; color:white; cursor:pointer;">🎵 Play Music</button>
+</div>
+
+<iframe id="music" width="0" height="0" src="https://www.youtube.com/embed/6p0J1z2G0Ew?enablejsapi=1" frameborder="0" allow="autoplay"></iframe>
+
+<script>
+let player;
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('music');
+}
+function toggleMusic(){
+    if(player && player.getPlayerState() !== 1){
+        player.playVideo();
+    } else if(player){
+        player.pauseVideo();
+    }
+}
+</script>
+<script src="https://www.youtube.com/iframe_api"></script>
+
+</body>
+</html>
